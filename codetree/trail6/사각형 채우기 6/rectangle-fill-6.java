@@ -25,6 +25,12 @@ n퀸의 경우, 같은 열에 못 둔다는 정보를 배열에 나타내는데 
 계단오르기 -> 어떤 값을 구한다
 n퀸 -> 퀸들의 배치를 구한다
 아까 쓴 논리적 비약 문장 이용해서 바로 구분할 수 있긴하다
+
+
+++ 추가적으로 상태로 요약은 되는데 상태공간이 너무 크면 상태를 다른걸로 바꿔보거나 아예 잘못 잡은것이다
+ex) 시간, 경험치 문제 (0/1 냅색)
+[인덱스][경험치] = 시간 으로 잡으니 경험치가 상한이 1억이다 -> 불가
+역으로 [인덱스][시간]을 써서 최대 경험치를 구하는 식으로 가능
 */
 public class Main {
     public static void main(String[] args) throws IOException {
@@ -52,7 +58,7 @@ public class Main {
         return dp[idx][mask] = fill(idx, n, mask, 0);
     }
 
-    // fill(idx, h, col, now) : 현재높이 h이고, 상태가 col일때, col을 전부 1로 채우면 나타나는 다음 idx 상태들
+    // fill(idx, h, col, next) : 현재높이 h이고, 상태가 col일때, col을 전부 1로 채우면 나타나는 다음 idx 상태들
     static int fill(int idx, int h, int col, int next) {
         if (h == 0) {
             if (col == (1 << n) - 1) {
