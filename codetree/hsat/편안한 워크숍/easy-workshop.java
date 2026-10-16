@@ -2,6 +2,7 @@ import java.util.*;
 import java.io.*;
 
 원인: 기저에 "성공"과 "불가능"을 둘 다 INF로 씀 → 규칙: 기저값 = 상위 연산의 항등원
+예시: 최대의 항등원은 0(만약 음수가 가능하면 Integer.MIN_VALUE), 더하기의 항등원은 0, 곱하기의 항등원은 1
 
 public class Main {
     public static void main(String[] args) throws IOException {
