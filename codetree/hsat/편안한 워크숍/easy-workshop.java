@@ -1,6 +1,8 @@
 import java.util.*;
 import java.io.*;
 
+원인: 기저에 "성공"과 "불가능"을 둘 다 INF로 씀 → 규칙: 기저값 = 상위 연산의 항등원
+
 public class Main {
     public static void main(String[] args) throws IOException {
         // Please write your code here.
