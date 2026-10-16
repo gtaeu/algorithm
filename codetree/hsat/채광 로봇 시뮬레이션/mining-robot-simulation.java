@@ -1,6 +1,12 @@
 import java.util.*;
 import java.io.*;
 
+/*
+종료조건의 기저조건
+이 상태에서 집계할 항목 자체가 없다: 항등원 반환
+이 상태에서 상태가 딱 하나 남았다: 그 값자체를 리턴
+*/
+
 public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
