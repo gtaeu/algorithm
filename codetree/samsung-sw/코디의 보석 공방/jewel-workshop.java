@@ -64,12 +64,14 @@ public class Main {
                     System.out.println(-1);
                     continue;
                 }
-
-                for (int j = 0; j < info.size(); j++) {
-                    if (info.get(j)[0] == 0) continue;
-                    if (j == idx) continue;
-                    int abs = Math.abs(info.get(idx)[1] - info.get(j)[1]);
-                    map.put(abs, map.get(abs) - 1);
+ 
+                if (info.get(idx)[0] != 0) {
+                    for (int j = 0; j < info.size(); j++) {
+                        if (info.get(j)[0] == 0) continue;
+                        if (j == idx) continue;
+                        int abs = Math.abs(info.get(idx)[1] - info.get(j)[1]);
+                        map.put(abs, map.get(abs) - 1);
+                    }
                 }
 
                 if (info.get(idx)[0] == 0) System.out.println(-1);
