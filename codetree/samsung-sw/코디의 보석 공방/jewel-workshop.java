@@ -30,6 +30,7 @@ public class Main {
         info = new ArrayList<>(); // info.get(i) = {사용가능(1), 보석무게, 보석가치}
         cnt = new int[3001];
         memo = new int[1100][3001];
+        int[] dp = new int[3001];
 
         for (int i = 0; i < n; i++) {
             int w = nextInt();
@@ -83,9 +84,19 @@ public class Main {
             }
             else if (num == 4) {
                 int w = nextInt();
-                for (int[] row : memo) Arrays.fill(row, -1);
-                int ans = show(0, w);
-                System.out.println(ans == Integer.MIN_VALUE ? 0 : ans);
+                // for (int[] row : memo) Arrays.fill(row, -1);
+                // int ans = show(0, w);
+                Arrays.fill(dp, 0); 
+                for (int[] arr : info) {
+                    if (arr[0] == 0) continue;
+
+                    for (int j = w; j >= arr[1]; j--) {
+                        dp[j] = Math.max(dp[j], dp[j - arr[1]] + arr[2]);
+                    }
+                }
+
+
+                System.out.println(dp[w]);
             }
             else {
                 d = nextInt();
