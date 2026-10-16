@@ -28,7 +28,7 @@ public class Main {
         nextInt();
         n = nextInt();
         info = new ArrayList<>(); // info.get(i) = {사용가능(1), 보석무게, 보석가치}
-        map = new HashMap<>();
+        cnt = new int[3001];
         memo = new int[1100][3001];
 
         for (int i = 0; i < n; i++) {
@@ -40,7 +40,7 @@ public class Main {
         for (int r = 0; r < info.size() - 1; r++) {
             for (int c = r+1; c < info.size(); c++) {
                 int abs = Math.abs(info.get(r)[1] - info.get(c)[1]);
-                map.put(abs, map.getOrDefault(abs, 0) + 1);
+                cnt[abs]++;
             }
         }
         for (int i = 0; i < q-1; i++) {
@@ -51,7 +51,7 @@ public class Main {
                 for (int j = 0; j < info.size(); j++) {
                     if (info.get(j)[0] == 0) continue;
                     int abs = Math.abs(w - info.get(j)[1]);
-                    map.put(abs , map.getOrDefault(abs, 0) + 1);
+                    cnt[abs]++;
                 }
                 info.add(new int[]{1, w, v});
                 n++;
@@ -71,7 +71,7 @@ public class Main {
                         if (info.get(j)[0] == 0) continue;
                         if (j == idx) continue;
                         int abs = Math.abs(info.get(idx)[1] - info.get(j)[1]);
-                        map.put(abs, map.get(abs) - 1);
+                        cnt[abs]--;
                     }
                 }
 
@@ -91,7 +91,7 @@ public class Main {
                 d = nextInt();
                 int ans = 0;
                 for (int k = 0; k <= d; k++) {
-                    ans += map.getOrDefault(k, 0);
+                    ans += cnt[k];
                 }
                 System.out.println(ans);
             }
@@ -101,7 +101,7 @@ public class Main {
     static int q, n, d;
     static ArrayList<int[]> info;
     static int[][] memo;
-    static HashMap<Integer, Integer> map;
+    static int[] cnt;
 
 
     // show(idx,w): idx부터 고려하고, 채울수있는 무게 한계가 w일때, 고른 보석들의 가치합 최대
