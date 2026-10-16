@@ -30,7 +30,7 @@ public class Main {
         info = new ArrayList<>(); // info.get(i) = {사용가능(1), 보석무게, 보석가치}
         map = new HashMap<>();
         int[] prefix = new int[3001];
-        memo = new int[1000][3001];
+        memo = new int[1100][3001];
         for (int[] row : memo) Arrays.fill(row, -1);
 
         for (int i = 0; i < n; i++) {
