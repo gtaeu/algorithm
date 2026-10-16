@@ -28,24 +28,48 @@ public class Main {
         nextInt();
         n = nextInt();
         info = new ArrayList<>(); // info.get(i) = {사용가능(1), 보석무게, 보석가치}
+        map = new HashMap<>();
+
         for (int i = 0; i < n; i++) {
             int w = nextInt();
             int v = nextInt();
             info.add(new int[]{1, w, v}); // 0인덱스
+            
+        }
+        for (int r = 0; r < info.size() - 1; r++) {
+            for (int c = r+1; c < info.size(); c++) {
+                int abs = Math.abs(info.get(r)[1] - info.get(c)[1]);
+                map.put(abs, map.getOrDefault(abs, 0) + 1);
+            }
         }
         for (int i = 0; i < q-1; i++) {
             int num = nextInt();
             if (num == 2) {
                 int w = nextInt();
                 int v = nextInt();
+                for (int j = 0; j < info.size(); j++) {
+                    if (info.get(j)[0] == 0) continue;
+                    int abs = Math.abs(w - info.get(j)[1]);
+                    map.put(abs , map.getOrDefault(abs, 0) + 1);
+                }
                 info.add(new int[]{1, w, v});
                 n++;
+                
             }
             else if (num == 3) {
                 int idx = nextInt() - 1;
+
+                
                 if (idx > info.size() - 1) {
                     System.out.println(-1);
                     continue;
+                }
+
+                for (int j = 0; j < info.size(); j++) {
+                    if (info.get(j)[0] == 0) continue;
+                    if (j == idx) continue;
+                    int abs = Math.abs(info.get(idx)[1] - info.get(j)[1]);
+                    map.put(abs, map.get(abs) - 1);
                 }
 
                 if (info.get(idx)[0] == 0) System.out.println(-1);
@@ -63,7 +87,10 @@ public class Main {
             }
             else {
                 d = nextInt();
-                int ans = dfs(0, new ArrayList<>());
+                int ans = 0;
+                for (int k = 0; k <= d; k++) {
+                    ans += map.getOrDefault(k, 0);
+                }
                 System.out.println(ans);
             }
         }
@@ -72,6 +99,8 @@ public class Main {
     static int q, n, d;
     static ArrayList<int[]> info;
     static int[][] memo;
+    static HashMap<Integer, Integer> map;
+
 
     // show(idx,w): idx부터 고려하고, 채울수있는 무게 한계가 w일때, 고른 보석들의 가치합 최대
     // (idx,w) -> (idx+1, w - ~) / (idx, w) 사용가능 상태인지 따져야함
@@ -102,27 +131,32 @@ public class Main {
         return memo[idx][w] = res;
     }
 
-    // dfs(idx, cnt) : idx부터 고려했을 때, 고를 수 있는 보석 개수가 2개 일 때, 무게차이가 D이하인 세트의 개수
-    // 1000C2
-    static int dfs(int idx, List<Integer> lst) {
-        if (lst.size() == 2) {
-            if (Math.abs(lst.get(0) - lst.get(1)) <= d) {
-                return 1;
-            }
-            else return 0;
-        }
+    // dfs(idx, cnt) : idx부터 고려했을 때, 고를 수 있는 보석 개수가 cnt개 일 때, 무게차이가 D이하인 세트의 개수
+    // (idx, cnt) -> (idx+1, cnt-1) / (idx+1, cnt)
+    // 1000 * 2 = 2천 근데 캐싱이 된다는 가정하에 입력이 여러번이어도 2천인데, 팔릴수도있고, 입고될수도있는데
+    // 만약 세트구성할때마다 새로운 상태면 2의 n승인데.. 몰론 이것보다는 작겠지만 최악의경우
+    // 고려로 어떻게 풀어야할지 모르겠다
 
-        int res = 0;
+    // dfs(idx, cnt) : idx부터 고려했을 때, 고를 수 있는 보석 개수가 cnt일 때, 무게차이가 D이하인 세트의 개수
+    // (idx, 2) -> (idx+1, 1)
 
-        for (int i = idx; i < info.size(); i++) {
-            int[] arr = info.get(i);
-            if (arr[0] == 0) continue;
+    // dfs(idx, bef) : 인덱스부터 고려할때 bef와 idx의 무게차이가 d이하인 경우의 수
+    // (idx, -1) -> (idx+1, bef)
 
-            lst.add(arr[1]);
-            res += dfs(i+1, lst);
-            lst.remove(lst.size() - 1);
-        }
+    // dfs(idx, w) : idx를 포함할때 idx이후의 수들 중 차이가 w이하인 것들의 경우의 수
+    // 1000 * 3000 = 3백만 겉 호출이 n^2이지만 dp를 반복마다 초기화하지 않기에 3백만임
+    // static int dfs(int idx, int w) {
+    //     if (dp[idx][w] != -1) return dp[idx][w];
 
-        return res;
-    }
+    //     int res = 0;
+
+    //     for (int i = idx+1; i < info.size(); i++) {
+    //         int[] arr = info.get(i);
+    //         if (arr[0] == 0) continue;
+
+    //         if (Math.abs(info.get(idx)[1] - arr[1]) <= w) res++;
+    //     }
+
+    //     return dp[idx][w] = res;
+    // }
 }
