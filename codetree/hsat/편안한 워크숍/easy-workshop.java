@@ -1,6 +1,7 @@
 import java.util.*;
 import java.io.*;
 
+/*
 원인: 기저에 "성공"과 "불가능"을 둘 다 INF로 씀 → 규칙: 기저값 = 상위 연산의 항등원
 예시: 최대의 항등원은 0(만약 음수가 가능하면 Integer.MIN_VALUE), 더하기의 항등원은 0, 곱하기의 항등원은 1
 
@@ -10,6 +11,7 @@ import java.io.*;
 격자나 그래프처럼 이동이 인접성으로만 정해지면 시작점 루프가 필요합니다. (가상의 시작 노드를 모든 칸에 연결하는 방법이 있지만, 결과는 같습니다.)
 
 이 판단 기준만 알아 두면, 문제를 처음 볼 때 점화식을 "선택/넘어가기"로 세울지 "출발점에서 끝까지"로 세울지 바로 정할 수 있습니다.
+*/
 
 public class Main {
     public static void main(String[] args) throws IOException {
