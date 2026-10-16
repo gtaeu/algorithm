@@ -31,6 +31,7 @@ public class Main {
         map = new HashMap<>();
         int[] prefix = new int[3001];
         memo = new int[1000][3001];
+        for (int[] row : memo) Arrays.fill(row, -1);
 
         for (int i = 0; i < n; i++) {
             int w = nextInt();
@@ -90,7 +91,6 @@ public class Main {
             }
             else if (num == 4) {
                 int w = nextInt();
-        
                 for (int[] row : memo) Arrays.fill(row, -1);
                 int ans = show(0, w);
                 System.out.println(ans == Integer.MIN_VALUE ? 0 : ans);
@@ -121,8 +121,6 @@ public class Main {
         if (w < 0) return Integer.MIN_VALUE;
 
         if (memo[idx][w] != -1) return memo[idx][w];
-
-
 
         int res = Integer.MIN_VALUE;
 
@@ -167,4 +165,3 @@ public class Main {
     //     return dp[idx][w] = res;
     // }
 }
-
