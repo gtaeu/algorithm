@@ -31,6 +31,7 @@ public class Main {
         cnt = new int[3001];
         memo = new int[1100][3001];
         int[] dp = new int[3001];
+        StringBuilder sb = new StringBuilder();
 
         for (int i = 0; i < n; i++) {
             int w = nextInt();
@@ -63,7 +64,7 @@ public class Main {
 
                 
                 if (idx > info.size() - 1) {
-                    System.out.println(-1);
+                    sb.append(-1).append('\n');
                     continue;
                 }
  
@@ -76,16 +77,14 @@ public class Main {
                     }
                 }
 
-                if (info.get(idx)[0] == 0) System.out.println(-1);
+                if (info.get(idx)[0] == 0) sb.append(-1).append('\n');
                 else {
-                    System.out.println(info.get(idx)[2]);
+                    sb.append(info.get(idx)[2]).append('\n');
                     info.get(idx)[0] = 0;
                 }
             }
             else if (num == 4) {
                 int w = nextInt();
-                // for (int[] row : memo) Arrays.fill(row, -1);
-                // int ans = show(0, w);
                 Arrays.fill(dp, 0); 
                 for (int[] arr : info) {
                     if (arr[0] == 0) continue;
@@ -95,8 +94,7 @@ public class Main {
                     }
                 }
 
-
-                System.out.println(dp[w]);
+                sb.append(dp[w]).append('\n');
             }
             else {
                 d = nextInt();
@@ -116,9 +114,10 @@ public class Main {
                     while (j < m && ws[j] - ws[k] <= d) j++;
                     ans += j - k - 1;
                 }
-                System.out.println(ans);
+                sb.append(ans).append('\n');
             }
         }
+        System.out.print(sb);
     }
 
     static int q, n, d;
@@ -126,10 +125,8 @@ public class Main {
     static int[][] memo;
     static int[] cnt;
 
-
     // show(idx,w): idx부터 고려하고, 채울수있는 무게 한계가 w일때, 고른 보석들의 가치합 최대
     // (idx,w) -> (idx+1, w - ~) / (idx, w) 사용가능 상태인지 따져야함
-    // 3백만
     static int show(int idx, int w) {
         if (idx == n) {
             if (w >= 0) return 0;
@@ -139,8 +136,6 @@ public class Main {
         if (w < 0) return Integer.MIN_VALUE;
 
         if (memo[idx][w] != -1) return memo[idx][w];
-
-
 
         int res = Integer.MIN_VALUE;
 
@@ -155,34 +150,4 @@ public class Main {
 
         return memo[idx][w] = res;
     }
-
-    // dfs(idx, cnt) : idx부터 고려했을 때, 고를 수 있는 보석 개수가 cnt개 일 때, 무게차이가 D이하인 세트의 개수
-    // (idx, cnt) -> (idx+1, cnt-1) / (idx+1, cnt)
-    // 1000 * 2 = 2천 근데 캐싱이 된다는 가정하에 입력이 여러번이어도 2천인데, 팔릴수도있고, 입고될수도있는데
-    // 만약 세트구성할때마다 새로운 상태면 2의 n승인데.. 몰론 이것보다는 작겠지만 최악의경우
-    // 고려로 어떻게 풀어야할지 모르겠다
-
-    // dfs(idx, cnt) : idx부터 고려했을 때, 고를 수 있는 보석 개수가 cnt일 때, 무게차이가 D이하인 세트의 개수
-    // (idx, 2) -> (idx+1, 1)
-
-    // dfs(idx, bef) : 인덱스부터 고려할때 bef와 idx의 무게차이가 d이하인 경우의 수
-    // (idx, -1) -> (idx+1, bef)
-
-    // dfs(idx, w) : idx를 포함할때 idx이후의 수들 중 차이가 w이하인 것들의 경우의 수
-    // 1000 * 3000 = 3백만 겉 호출이 n^2이지만 dp를 반복마다 초기화하지 않기에 3백만임
-    // static int dfs(int idx, int w) {
-    //     if (dp[idx][w] != -1) return dp[idx][w];
-
-    //     int res = 0;
-
-    //     for (int i = idx+1; i < info.size(); i++) {
-    //         int[] arr = info.get(i);
-    //         if (arr[0] == 0) continue;
-
-    //         if (Math.abs(info.get(idx)[1] - arr[1]) <= w) res++;
-    //     }
-
-    //     return dp[idx][w] = res;
-    // }
 }
-
