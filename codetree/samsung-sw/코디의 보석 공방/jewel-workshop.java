@@ -29,9 +29,7 @@ public class Main {
         n = nextInt();
         info = new ArrayList<>(); // info.get(i) = {사용가능(1), 보석무게, 보석가치}
         map = new HashMap<>();
-        int[] prefix = new int[3001];
         memo = new int[1100][3001];
-        for (int[] row : memo) Arrays.fill(row, -1);
 
         for (int i = 0; i < n; i++) {
             int w = nextInt();
@@ -42,9 +40,7 @@ public class Main {
         for (int r = 0; r < info.size() - 1; r++) {
             for (int c = r+1; c < info.size(); c++) {
                 int abs = Math.abs(info.get(r)[1] - info.get(c)[1]);
-                for (int i = abs; i <= 3000; i++) {
-                    prefix[i]++;
-                }
+                map.put(abs, map.getOrDefault(abs, 0) + 1);
             }
         }
         for (int i = 0; i < q-1; i++) {
@@ -55,9 +51,7 @@ public class Main {
                 for (int j = 0; j < info.size(); j++) {
                     if (info.get(j)[0] == 0) continue;
                     int abs = Math.abs(w - info.get(j)[1]);
-                    for (int k = abs; k <= 3000; k++) {
-                        prefix[k]++;
-                    }
+                    map.put(abs , map.getOrDefault(abs, 0) + 1);
                 }
                 info.add(new int[]{1, w, v});
                 n++;
@@ -77,9 +71,7 @@ public class Main {
                         if (info.get(j)[0] == 0) continue;
                         if (j == idx) continue;
                         int abs = Math.abs(info.get(idx)[1] - info.get(j)[1]);
-                        for (int k = abs; k <= 3000; k++) {
-                            prefix[k]--;
-                        }
+                        map.put(abs, map.get(abs) - 1);
                     }
                 }
 
@@ -98,7 +90,10 @@ public class Main {
             else {
                 d = nextInt();
                 int ans = 0;
-                System.out.println(prefix[d]);
+                for (int k = 0; k <= d; k++) {
+                    ans += map.getOrDefault(k, 0);
+                }
+                System.out.println(ans);
             }
         }
     }
@@ -121,6 +116,8 @@ public class Main {
         if (w < 0) return Integer.MIN_VALUE;
 
         if (memo[idx][w] != -1) return memo[idx][w];
+
+
 
         int res = Integer.MIN_VALUE;
 
