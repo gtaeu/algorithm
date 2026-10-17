@@ -22,10 +22,8 @@ public class Main {
         }
         
         int ans = Integer.MAX_VALUE;
-        int l = 0;
-        int r = 0;
-        set.add(arr[l]);
-        cnt[arr[l]]--;
+        int l = -1;
+        int r = -1;
         int pass = -1;
         while (l <= r && r < n) {
             while (true) {
@@ -49,10 +47,12 @@ public class Main {
 
             // System.out.println(l + " " + r );
 
-            cnt[arr[l]]++;
-            if (cnt[arr[l]] == copy[arr[l]]) {
-                set.remove(arr[l]);
-                pass = 0;
+            if (l != -1) {
+                cnt[arr[l]]++;
+                if (cnt[arr[l]] == copy[arr[l]]) {
+                    set.remove(arr[l]);
+                    pass = 0;
+                }
             }
             l++;
         }
