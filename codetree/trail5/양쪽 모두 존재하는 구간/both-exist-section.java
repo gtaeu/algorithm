@@ -8,6 +8,10 @@ public class Main {
 
         int n = Integer.parseInt(st.nextToken());
         int m = Integer.parseInt(st.nextToken());
+        if (n == 1) {
+            System.out.println(-1);
+            System.exit(0);
+        }
 
         int[] arr = new int[n];
         int[] cnt = new int[m+1];
@@ -26,27 +30,21 @@ public class Main {
         cnt[arr[l]]--;
         set.add(arr[l]);
         int r = 1;
-        while (r < n) {
-            while (true) {
-                if (r == n) break;
-
+        while (l < n) {
+            while (set.size() != m && r < n && cnt[arr[r]] != 1) {
                 int temp = arr[r];
-                if (set.size() != m) {
-                    cnt[temp]--;
-                    set.add(temp);
-                    r++;
-                }
-                
-                if (set.size() == m) {
-                    // System.out.println(l + " " + r);
-                    int len = r - l;
-                    ans = Math.min(ans, len);
-                    break;
-                }
+                cnt[temp]--;
+                set.add(temp);
+                r++;
             }
 
-            // System.out.println(l + " " + r );
+            if (r == n && set.size() != m) break;
 
+            if (set.size() == m) {
+                int len = r - l;
+                ans = Math.min(ans, len);
+            }
+            
             cnt[arr[l]]++;
             if (cnt[arr[l]] == copy[arr[l]]) {
                 set.remove(arr[l]);
