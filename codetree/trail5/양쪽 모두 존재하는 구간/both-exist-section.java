@@ -26,20 +26,35 @@ public class Main {
         int r = 0;
         set.add(arr[l]);
         cnt[arr[l]]--;
-        while (r < n-1) {
-            if (set.size() == m) {
-                ans = Math.min(ans, r - l + 1);
-                cnt[arr[l]]++;
-                if (cnt[arr[l]] == copy[arr[l]]) set.remove(arr[l]);
-                l++;
-                continue;
+        int pass = -1;
+        while (l <= r && r < n) {
+            while (true) {
+                if (set.size() == m && pass == 1) ans = Math.min(ans, r - l + 1);
+
+                if (r == n-1) break;
+
+                int temp = arr[r+1];
+                if (cnt[temp] == 1) break;
+
+                cnt[temp]--;
+                set.add(temp);
+                r++;
+
+                if (set.size() == m) {
+                    ans = Math.min(ans, r - l + 1);
+                    pass = 1;
+                    break;
+                }
             }
 
-            r++;
-            cnt[arr[r]]--;
-            if (!set.contains(arr[r])) {
-                set.add(arr[r]);
+            // System.out.println(l + " " + r );
+
+            cnt[arr[l]]++;
+            if (cnt[arr[l]] == copy[arr[l]]) {
+                set.remove(arr[l]);
+                pass = 0;
             }
+            l++;
         }
 
         System.out.println(ans == Integer.MAX_VALUE ? -1 : ans);
