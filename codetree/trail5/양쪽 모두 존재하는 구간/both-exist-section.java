@@ -55,7 +55,8 @@ public class Main {
 
         l = 0;
         r = n-1;
-        System.arraycopy(copy, 0, cnt, 0, m);
+        System.arraycopy(copy, 0, cnt, 0, m+1);
+        // System.out.println(Arrays.toString(cnt));
         for (int i = r; i >= l; i--) {
             if (cnt[arr[i]] <= 1) {
                 r = i;
