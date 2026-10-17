@@ -31,12 +31,12 @@ public class Main {
                 if (r == n) break;
 
                 int temp = arr[r];
-                if (set.size() == m) break;
-
-                cnt[temp]--;
-                set.add(temp);
-                r++;
-
+                if (set.size() != m) {
+                    cnt[temp]--;
+                    set.add(temp);
+                    r++;
+                }
+                
                 if (set.size() == m) {
                     // System.out.println(l + " " + r);
                     int len = r - l;
