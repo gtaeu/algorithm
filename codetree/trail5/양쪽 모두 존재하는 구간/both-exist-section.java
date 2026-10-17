@@ -22,37 +22,34 @@ public class Main {
         }
         
         int ans = Integer.MAX_VALUE;
-        int l = -1;
-        int r = -1;
-        int pass = -1;
-        while (l <= r && r < n) {
+        int l = 0;
+        cnt[arr[l]]--;
+        set.add(arr[l]);
+        int r = 1;
+        while (r < n) {
             while (true) {
-                if (set.size() == m && pass == 1) ans = Math.min(ans, r - l + 1);
+                if (r == n) break;
 
-                if (r == n-1) break;
-
-                int temp = arr[r+1];
-                if (cnt[temp] == 1) break;
+                int temp = arr[r];
+                if (set.size() == m) break;
 
                 cnt[temp]--;
                 set.add(temp);
                 r++;
 
                 if (set.size() == m) {
-                    ans = Math.min(ans, r - l + 1);
-                    pass = 1;
+                    // System.out.println(l + " " + r);
+                    int len = r - l;
+                    ans = Math.min(ans, len);
                     break;
                 }
             }
 
             // System.out.println(l + " " + r );
 
-            if (l != -1) {
-                cnt[arr[l]]++;
-                if (cnt[arr[l]] == copy[arr[l]]) {
-                    set.remove(arr[l]);
-                    pass = 0;
-                }
+            cnt[arr[l]]++;
+            if (cnt[arr[l]] == copy[arr[l]]) {
+                set.remove(arr[l]);
             }
             l++;
         }
