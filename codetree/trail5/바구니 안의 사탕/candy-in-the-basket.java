@@ -26,14 +26,20 @@ public class Main {
         int ans = 0;
 
 
-        // System.out.println(maxPos);
-        for (int l = 0; l <= maxPos; l++) {
+        if (maxPos - 2*k < 0) {
+            System.out.println(Arrays.stream(arr).sum());
+            System.exit(0);
+        }
+        
+        for (int l = 0; l <= maxPos - 2*k; l++) {
             while (r != maxPos+1 && r-l < 2*k+1) {
                 cnt += arr[r];
                 r++;
             }
 
-            ans = Math.max(ans, cnt);
+            if (r-l == 2*k+1) {
+                ans = Math.max(ans, cnt);
+            }
 
             cnt -= arr[l];
         }
