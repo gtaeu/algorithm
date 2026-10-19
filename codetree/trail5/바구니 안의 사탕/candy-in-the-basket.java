@@ -25,15 +25,15 @@ public class Main {
         int cnt = 0;
         int ans = 0;
 
-        for (int l = 0; l <= maxPos - 2*k; l++) {
+
+        // System.out.println(maxPos);
+        for (int l = 0; l <= maxPos; l++) {
             while (r != maxPos+1 && r-l < 2*k+1) {
                 cnt += arr[r];
                 r++;
             }
 
-            if (r-l == 2*k+1) {
-                ans = Math.max(ans, cnt);
-            }
+            ans = Math.max(ans, cnt);
 
             cnt -= arr[l];
         }
