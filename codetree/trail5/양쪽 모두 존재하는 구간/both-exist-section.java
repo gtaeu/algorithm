@@ -19,17 +19,17 @@ public class Main {
             out[temp]++;
         }
 
-        int outKind = (int) Arrays.stream(out).filter(i -> i >= 2).count();
-
-
-        if (outKind != m) {
+        if (n < m * 2) {
             System.out.println(-1);
             System.exit(0);
         }
 
+        int outKind = (int) Arrays.stream(out).filter(i -> i >= 1).count();
+
         int inKind = 1;
         in[arr[0]]++;
         out[arr[0]]--;
+        if (out[arr[0]] == 0) outKind--;
         int r = 1;
         int ans = Integer.MAX_VALUE;
 
@@ -42,7 +42,7 @@ public class Main {
                 r++;
             }
 
-            if (inKind == m) {
+            if (inKind == m && outKind == m) {
                 ans = Math.min(ans, r - l);
             }
 
