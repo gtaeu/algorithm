@@ -33,7 +33,7 @@ public class Main {
         int ans = Integer.MAX_VALUE;
 
         for (int l = 0; l < n; l++) {
-            while (r != n && inKind != m && out[arr[r]] != 1) {
+            while (r != n && inKind != m && out[arr[r]] > 1) {
                 // System.out.println(l + " " + r);
                 out[arr[r]]--;
 
@@ -46,14 +46,12 @@ public class Main {
 
             if (inKind == m && outKind == m) {
                 ans = Math.min(ans, r - l);
-                
             }
 
             in[arr[l]]--;
             out[arr[l]]++;
             if (in[arr[l]] == 0) inKind--;
             if (out[arr[l]] == 1) outKind++;
-            if (l + 1 == r) r++;
         }
 
         System.out.println(ans == Integer.MAX_VALUE ? -1 : ans);
