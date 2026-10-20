@@ -27,9 +27,11 @@ public class Main {
         nextInt();
         info = new ArrayList<>();
         boolean dirty = true;
+        boolean sortDirty = true;
         n = nextInt();
         dp = new int[1100][3001];
         int[] ws = new int[1100];
+        int m = 0;
         q--;
         for (int i = 0; i < n; i++) {
             int w = nextInt();
@@ -43,6 +45,7 @@ public class Main {
                 info.add(new int[]{1, nextInt(), nextInt()});
                 n++;
                 dirty = true;
+                sortDirty = true;
             }
             else if (task == 3) {
                 int idx = nextInt() - 1;
@@ -53,6 +56,7 @@ public class Main {
                 System.out.println(info.get(idx)[2]);
                 info.get(idx)[0] = 0;
                 dirty = true;
+                sortDirty = true;
             }
             else if (task == 4) {
                 int w = nextInt();
@@ -66,13 +70,16 @@ public class Main {
             }
             else if (task == 5) {
                 int d = nextInt();
-                int m = 0;
-                for (int i = 0; i < n; i++) {
-                    if (info.get(i)[0] == 1) {
-                        ws[m++] = info.get(i)[1];
+                if (sortDirty) {
+                    m = 0;
+                    for (int i = 0; i < n; i++) {
+                        if (info.get(i)[0] == 1) {
+                            ws[m++] = info.get(i)[1];
+                        }
                     }
+                    Arrays.sort(ws, 0, m);
+                    sortDirty = false;
                 }
-                Arrays.sort(ws, 0, m);
                 // System.out.println(lst);
                 int r = 0;
                 int cnt = 0;
