@@ -33,6 +33,7 @@ public class Main {
         int[] ws = new int[1100];
         int m = 0;
         q--;
+        StringBuilder sb = new StringBuilder();
         for (int i = 0; i < n; i++) {
             int w = nextInt();
             int v = nextInt();
@@ -50,10 +51,10 @@ public class Main {
             else if (task == 3) {
                 int idx = nextInt() - 1;
                 if (idx >= info.size() || info.get(idx)[0] == 0) {
-                    System.out.println(-1);
+                    sb.append(-1).append('\n');
                     continue;
                 }
-                System.out.println(info.get(idx)[2]);
+                sb.append(info.get(idx)[2]).append('\n');
                 info.get(idx)[0] = 0;
                 dirty = true;
                 sortDirty = true;
@@ -61,9 +62,12 @@ public class Main {
             else if (task == 4) {
                 int w = nextInt();
 
-                for (int[] row : dp) Arrays.fill(row, -1);
-                dirty = false;        
-                System.out.println(dfs(0, w));
+                if (dirty) {
+                    for (int[] row : dp) Arrays.fill(row, -1);
+                    dirty = false;
+                }
+                
+                sb.append(dfs(0,w)).append('\n');
             }
             else if (task == 5) {
                 int d = nextInt();
@@ -90,10 +94,10 @@ public class Main {
                     }
                 }
 
-                System.out.println(cnt);
+                sb.append(cnt).append('\n');
             }
         }
-        
+        System.out.println(sb);
     }
 
     static ArrayList<int[]> info;
