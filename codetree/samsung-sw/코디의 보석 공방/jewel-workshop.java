@@ -29,6 +29,7 @@ public class Main {
         n = nextInt();
         q--;
         dp = new int[1101][3001];
+        boolean dirty = true;
         for (int i = 0; i < n; i++) {
             int w = nextInt();
             int v = nextInt();
@@ -40,6 +41,7 @@ public class Main {
             if (task == 2) {
                 info.add(new int[]{1, nextInt(), nextInt()});
                 n++;
+                dirty = true;
             }
             else if (task == 3) {
                 int idx = nextInt() - 1;
@@ -49,22 +51,25 @@ public class Main {
                 }
                 System.out.println(info.get(idx)[2]);
                 info.get(idx)[0] = 0;
+                dirty = true;
             }
             else if (task == 4) {
                 int w = nextInt();
-                for (int i = 0; i <= w; i++) dp[n][i] = 0;
+                if (dirty) {
+                    for (int i = 0; i <= 3000; i++) dp[n][i] = 0;
 
-                for (int i = n-1; i >= 0; i--) {
-                    int[] it = info.get(i);
-                    for (int j = 0; j <= w; j++) {
-                        
-                        int res = 0;
-                        res = dp[i+1][j];
-                        if (it[0] != 0 && j - it[1] >= 0) {
-                            res = Math.max(res, it[2] + dp[i+1][j-it[1]]);
+                    for (int i = n-1; i >= 0; i--) {
+                        int[] it = info.get(i);
+                        for (int j = 0; j <= 3000; j++) {
+                            int res = 0;
+                            res = dp[i+1][j];
+                            if (it[0] != 0 && j - it[1] >= 0) {
+                                res = Math.max(res, it[2] + dp[i+1][j-it[1]]);
+                            }
+                            dp[i][j] = res;
                         }
-                        dp[i][j] = res;
                     }
+                    dirty = false;
                 }
 
                 System.out.println(dp[0][w]);
