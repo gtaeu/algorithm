@@ -29,19 +29,23 @@ public class Main {
         n = nextInt();
         q--;
         dp = new int[1101][3001];
-        boolean dirty = true;
+        int[] ws = new int[1100];
+        boolean dpDirty = true;
+        boolean sortDirty = true;
         for (int i = 0; i < n; i++) {
             int w = nextInt();
             int v = nextInt();
             info.add(new int[]{1, w, v}); // 1이면 사용가능, 0이면 불가, 0-index
         }
+        int m = info.size();
 
         while (q --> 0) {
             int task = nextInt();
             if (task == 2) {
                 info.add(new int[]{1, nextInt(), nextInt()});
                 n++;
-                dirty = true;
+                dpDirty = true;
+                sortDirty = true;
             }
             else if (task == 3) {
                 int idx = nextInt() - 1;
@@ -51,11 +55,12 @@ public class Main {
                 }
                 System.out.println(info.get(idx)[2]);
                 info.get(idx)[0] = 0;
-                dirty = true;
+                dpDirty = true;
+                sortDirty = true;
             }
             else if (task == 4) {
                 int w = nextInt();
-                if (dirty) {
+                if (dpDirty) {
                     for (int i = 0; i <= 3000; i++) dp[n][i] = 0;
 
                     for (int i = n-1; i >= 0; i--) {
@@ -69,18 +74,19 @@ public class Main {
                             dp[i][j] = res;
                         }
                     }
-                    dirty = false;
+                    dpDirty = false;
                 }
 
                 System.out.println(dp[0][w]);
             }
             else if (task == 5) {
                 int d = nextInt();
-                int[] ws = new int[n];
-                int m = 0;
-                for (int[] t : info) if (t[0] == 1) ws[m++] = t[1];
-
-                Arrays.sort(ws, 0, m);
+                if (sortDirty) {
+                    m = 0;
+                    for (int[] t : info) if (t[0] == 1) ws[m++] = t[1];
+                    Arrays.sort(ws, 0, m);
+                    sortDirty = false;
+                }
                 // System.out.println(lst);
                 int r = 0;
                 int cnt = 0;
