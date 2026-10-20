@@ -55,8 +55,9 @@ public class Main {
                 for (int i = 0; i <= w; i++) dp[n][i] = 0;
 
                 for (int i = n-1; i >= 0; i--) {
+                    int[] it = info.get(i);
                     for (int j = 0; j <= w; j++) {
-                        int[] it = info.get(i);
+                        
                         int res = 0;
                         res = dp[i+1][j];
                         if (it[0] != 0 && j - it[1] >= 0) {
