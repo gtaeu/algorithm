@@ -4,7 +4,6 @@ class Solution {
         List<Integer> lst = new ArrayList<>();
 
         int r = 0;
-        // o[0]: 값, o[1]: 인덱스
         ArrayDeque<Integer> q = new ArrayDeque<>();
 
         for (int l = 0; l < n - k + 1; l++) {
@@ -16,14 +15,11 @@ class Solution {
                 r++;
             }
 
-            if (r - l == k) {
-                while (q.peekFirst() < l) {
-                    q.pollFirst();
-                }
-                lst.add(nums[q.peekFirst()]);
-                // lst.add(nums[maxIdx]);
+            if (q.peekFirst() < l) {
+                q.pollFirst();  
             }
-
+            lst.add(nums[q.peekFirst()]);
+            
         }
         return lst.stream().mapToInt(Integer::intValue).toArray();
     }
