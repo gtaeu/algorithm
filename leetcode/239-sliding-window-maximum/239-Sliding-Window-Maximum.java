@@ -15,11 +15,12 @@ class Solution {
                 r++;
             }
 
-            if (q.peekFirst() < l) {
-                q.pollFirst();  
-            }
             lst.add(nums[q.peekFirst()]);
-            
+
+            if (q.peekFirst() == l) {
+                q.pollFirst();
+            }
+
         }
         return lst.stream().mapToInt(Integer::intValue).toArray();
     }
