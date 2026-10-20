@@ -22,132 +22,93 @@ public class Main {
         return Integer.parseInt(next());
     }
 
-    public static void main(String[] args) throws IOException {
-
-        q = nextInt();
+    public static void main(String[] args) {
+        int q = nextInt();
         nextInt();
+        info = new ArrayList<>();
         n = nextInt();
-        info = new ArrayList<>(); // info.get(i) = {사용가능(1), 보석무게, 보석가치}
-        cnt = new int[3001];
-        memo = new int[1100][3001];
-        int[] dp = new int[3001];
-        StringBuilder sb = new StringBuilder();
-
+        q--;
         for (int i = 0; i < n; i++) {
             int w = nextInt();
             int v = nextInt();
-            info.add(new int[]{1, w, v}); // 0인덱스
-            
+            info.add(new int[]{1, w, v}); // 1이면 사용가능, 0이면 불가, 0-index
         }
-        for (int r = 0; r < info.size() - 1; r++) {
-            for (int c = r+1; c < info.size(); c++) {
-                int abs = Math.abs(info.get(r)[1] - info.get(c)[1]);
-                cnt[abs]++;
-            }
-        }
-        for (int i = 0; i < q-1; i++) {
-            int num = nextInt();
-            if (num == 2) {
-                int w = nextInt();
-                int v = nextInt();
-                for (int j = 0; j < info.size(); j++) {
-                    if (info.get(j)[0] == 0) continue;
-                    int abs = Math.abs(w - info.get(j)[1]);
-                    cnt[abs]++;
-                }
-                info.add(new int[]{1, w, v});
-                n++;
-                
-            }
-            else if (num == 3) {
-                int idx = nextInt() - 1;
 
-                
-                if (idx > info.size() - 1) {
-                    sb.append(-1).append('\n');
+        while (q --> 0) {
+            int task = nextInt();
+            if (task == 2) {
+                info.add(new int[]{1, nextInt(), nextInt()});
+                n++;
+            }
+            else if (task == 3) {
+                int idx = nextInt() - 1;
+                if (idx >= info.size() || info.get(idx)[0] == 0) {
+                    System.out.println(-1);
                     continue;
                 }
- 
-                if (info.get(idx)[0] != 0) {
-                    for (int j = 0; j < info.size(); j++) {
-                        if (info.get(j)[0] == 0) continue;
-                        if (j == idx) continue;
-                        int abs = Math.abs(info.get(idx)[1] - info.get(j)[1]);
-                        cnt[abs]--;
-                    }
-                }
-
-                if (info.get(idx)[0] == 0) sb.append(-1).append('\n');
-                else {
-                    sb.append(info.get(idx)[2]).append('\n');
-                    info.get(idx)[0] = 0;
-                }
+                System.out.println(info.get(idx)[2]);
+                info.get(idx)[0] = 0;
             }
-            else if (num == 4) {
+            else if (task == 4) {
                 int w = nextInt();
-                Arrays.fill(dp, 0); 
-                for (int[] arr : info) {
-                    if (arr[0] == 0) continue;
+                dp = new int[n][w+1];
+                for (int[] row : dp) Arrays.fill(row, -1);
+                int ans = dfs(0, w);
+                System.out.println(ans);
+            }
+            else if (task == 5) {
+                int d = nextInt();
+                List<Integer> lst = new ArrayList<>();
+                for (int i = 0; i < n; i++) {
+                    int[] temp = info.get(i);
+                    if (temp[0] == 0) continue;
+                    lst.add(temp[1]);
+                }
+                lst.sort((o1, o2) -> Integer.compare(o1, o2));
+                // System.out.println(lst);
+                int r = 0;
+                int cnt = 0;
+                for (int l = 0; l < lst.size() - 1; l++) {
+                    while (r != lst.size() && lst.get(r) - lst.get(l) <= d) {
+                        r++;
+                    }
 
-                    for (int j = w; j >= arr[1]; j--) {
-                        dp[j] = Math.max(dp[j], dp[j - arr[1]] + arr[2]);
+                    if (r - l >= 2) {
+                        cnt += r - l - 1;
                     }
                 }
 
-                sb.append(dp[w]).append('\n');
-            }
-            else {
-                d = nextInt();
-
-                // 남아있는 보석의 무게만 모아서 오름차순 정렬
-                int[] ws = new int[info.size()];
-                int m = 0;
-                for (int[] a : info) {
-                    if (a[0] == 1) ws[m++] = a[1];
-                }
-                Arrays.sort(ws, 0, m);
-
-                // 투포인터: k와 무게 차이가 d 이하인 "k 뒤쪽" 보석의 개수 = j - k - 1
-                int ans = 0;
-                int j = 0;
-                for (int k = 0; k < m; k++) {
-                    while (j < m && ws[j] - ws[k] <= d) j++;
-                    ans += j - k - 1;
-                }
-                sb.append(ans).append('\n');
+                System.out.println(cnt);
             }
         }
-        System.out.print(sb);
+        
     }
 
-    static int q, n, d;
     static ArrayList<int[]> info;
-    static int[][] memo;
-    static int[] cnt;
+    static int n;
+    static int[][] dp;
 
-    // show(idx,w): idx부터 고려하고, 채울수있는 무게 한계가 w일때, 고른 보석들의 가치합 최대
-    // (idx,w) -> (idx+1, w - ~) / (idx, w) 사용가능 상태인지 따져야함
-    static int show(int idx, int w) {
+    // dfs(idx, w): idx부터 고려, 남은 무게한계가 w일때, 최대 가치
+    // (idx, w) -> (idx+1, w - ~) / (idx+1, w)
+    // 천 * 3천 * 2 = 6백만 * 30(겉호출) = 1억8천
+    static int dfs(int idx, int w) {
         if (idx == n) {
             if (w >= 0) return 0;
             else return Integer.MIN_VALUE;
         }
 
+        if (info.get(idx)[0] == 0) return dfs(idx+1, w);
+
         if (w < 0) return Integer.MIN_VALUE;
 
-        if (memo[idx][w] != -1) return memo[idx][w];
+        if (dp[idx][w] != -1) return dp[idx][w];
 
-        int res = Integer.MIN_VALUE;
+        int res = 0;
 
-        int[] arr = info.get(idx);
-        if (arr[0] == 0) {
-            res = Math.max(res, show(idx+1, w));
-        }
-        else {
-            res = Math.max(res, show(idx+1, w));
-            res = Math.max(res, arr[2] + show(idx+1, w - arr[1]));
-        }
+        res = Math.max(res, info.get(idx)[2] + dfs(idx+1, w - info.get(idx)[1]));
+        res = Math.max(res, dfs(idx+1, w));
 
-        return memo[idx][w] = res;
+        return dp[idx][w] = res;
     }
+
 }
