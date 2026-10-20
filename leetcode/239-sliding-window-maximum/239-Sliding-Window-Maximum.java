@@ -5,33 +5,25 @@ class Solution {
 
         int r = 0;
         // o[0]: 값, o[1]: 인덱스
-        PriorityQueue<int[]> pq = new PriorityQueue<>((o1, o2) -> o1[0] == o2[0] ? Integer.compare(o2[1], o1[1]) : Integer.compare(o2[0], o1[0]));
-        int maxIdx = -1;
+        ArrayDeque<Integer> q = new ArrayDeque<>();
 
         for (int l = 0; l < n - k + 1; l++) {
             while (r != n && r-l != k) {
-                pq.add(new int[]{nums[r], r});
-                if (maxIdx == -1 || nums[maxIdx] <= nums[r]) maxIdx = r;
+                while (!q.isEmpty() && nums[q.peekLast()] < nums[r]) {
+                    q.pollLast();
+                }
+                q.addLast(r);
                 r++;
             }
 
             if (r - l == k) {
-                lst.add(nums[maxIdx]);
+                while (q.peekFirst() < l) {
+                    q.pollFirst();
+                }
+                lst.add(nums[q.peekFirst()]);
                 // lst.add(nums[maxIdx]);
             }
 
-            if (l  == maxIdx) {
-                pq.poll();
-                while (!pq.isEmpty() && pq.peek()[1] < l) {
-                    pq.poll();
-                }
-                if (pq.isEmpty()) {
-                    maxIdx = -1;
-                }
-                else {
-                    maxIdx = pq.peek()[1];
-                }
-            }
         }
         return lst.stream().mapToInt(Integer::intValue).toArray();
     }
