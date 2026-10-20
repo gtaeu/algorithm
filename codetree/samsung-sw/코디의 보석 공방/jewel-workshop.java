@@ -61,11 +61,8 @@ public class Main {
             else if (task == 4) {
                 int w = nextInt();
 
-                if (dirty) {
-                    for (int[] row : dp) Arrays.fill(row, -1);
-                    dirty = false;
-                }
-                
+                for (int[] row : dp) Arrays.fill(row, -1);
+                dirty = false;        
                 System.out.println(dfs(0, w));
             }
             else if (task == 5) {
