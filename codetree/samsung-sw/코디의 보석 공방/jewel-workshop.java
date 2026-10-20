@@ -28,7 +28,7 @@ public class Main {
         info = new ArrayList<>();
         n = nextInt();
         q--;
-        dp = new int[1100][3001];
+        dp = new int[1101][3001];
         for (int i = 0; i < n; i++) {
             int w = nextInt();
             int v = nextInt();
@@ -52,9 +52,21 @@ public class Main {
             }
             else if (task == 4) {
                 int w = nextInt();
-                for (int[] row : dp) Arrays.fill(row, -1);
-                int ans = dfs(0, w);
-                System.out.println(ans);
+                for (int i = 0; i <= w; i++) dp[n][i] = 0;
+
+                for (int i = n-1; i >= 0; i--) {
+                    for (int j = 0; j <= w; j++) {
+                        int[] it = info.get(i);
+                        int res = 0;
+                        res = dp[i+1][j];
+                        if (it[0] != 0 && j - it[1] >= 0) {
+                            res = Math.max(res, it[2] + dp[i+1][j-it[1]]);
+                        }
+                        dp[i][j] = res;
+                    }
+                }
+
+                System.out.println(dp[0][w]);
             }
             else if (task == 5) {
                 int d = nextInt();
