@@ -28,6 +28,7 @@ public class Main {
         info = new ArrayList<>();
         n = nextInt();
         q--;
+        dp = new int[1100][3001];
         for (int i = 0; i < n; i++) {
             int w = nextInt();
             int v = nextInt();
@@ -51,7 +52,6 @@ public class Main {
             }
             else if (task == 4) {
                 int w = nextInt();
-                dp = new int[n][w+1];
                 for (int[] row : dp) Arrays.fill(row, -1);
                 int ans = dfs(0, w);
                 System.out.println(ans);
