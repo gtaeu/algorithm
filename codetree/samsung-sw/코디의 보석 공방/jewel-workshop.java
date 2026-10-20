@@ -29,6 +29,7 @@ public class Main {
         n = nextInt();
         q--;
         dp = new int[1101][3001];
+        StringBuilder sb = new StringBuilder();
         for (int i = 0; i < n; i++) {
             int w = nextInt();
             int v = nextInt();
@@ -44,10 +45,11 @@ public class Main {
             else if (task == 3) {
                 int idx = nextInt() - 1;
                 if (idx >= info.size() || info.get(idx)[0] == 0) {
-                    System.out.println(-1);
+                    sb.append(-1).append('\n');
                     continue;
                 }
-                System.out.println(info.get(idx)[2]);
+                // System.out.println(info.get(idx)[2]);
+                sb.append(info.get(idx)[2]).append('\n');
                 info.get(idx)[0] = 0;
             }
             else if (task == 4) {
@@ -66,7 +68,8 @@ public class Main {
                     }
                 }
 
-                System.out.println(dp[0][w]);
+                // System.out.println(dp[0][w]);
+                sb.append(dp[0][w]).append('\n');
             }
             else if (task == 5) {
                 int d = nextInt();
@@ -90,9 +93,13 @@ public class Main {
                     }
                 }
 
-                System.out.println(cnt);
+                // System.out.println(cnt);
+                sb.append(cnt).append('\n');
+
             }
         }
+
+        System.out.println(sb);
         
     }
 
