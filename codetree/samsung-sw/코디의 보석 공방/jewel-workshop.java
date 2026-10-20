@@ -26,26 +26,22 @@ public class Main {
         int q = nextInt();
         nextInt();
         info = new ArrayList<>();
+        boolean dirty = true;
         n = nextInt();
+        dp = new int[1100][3001];
         q--;
-        dp = new int[1101][3001];
-        int[] ws = new int[1100];
-        boolean dpDirty = true;
-        boolean sortDirty = true;
         for (int i = 0; i < n; i++) {
             int w = nextInt();
             int v = nextInt();
             info.add(new int[]{1, w, v}); // 1이면 사용가능, 0이면 불가, 0-index
         }
-        int m = info.size();
 
         while (q --> 0) {
             int task = nextInt();
             if (task == 2) {
                 info.add(new int[]{1, nextInt(), nextInt()});
                 n++;
-                dpDirty = true;
-                sortDirty = true;
+                dirty = true;
             }
             else if (task == 3) {
                 int idx = nextInt() - 1;
@@ -55,43 +51,32 @@ public class Main {
                 }
                 System.out.println(info.get(idx)[2]);
                 info.get(idx)[0] = 0;
-                dpDirty = true;
-                sortDirty = true;
+                dirty = true;
             }
             else if (task == 4) {
                 int w = nextInt();
-                if (dpDirty) {
-                    for (int i = 0; i <= 3000; i++) dp[n][i] = 0;
 
-                    for (int i = n-1; i >= 0; i--) {
-                        int[] it = info.get(i);
-                        for (int j = 0; j <= 3000; j++) {
-                            int res = 0;
-                            res = dp[i+1][j];
-                            if (it[0] != 0 && j - it[1] >= 0) {
-                                res = Math.max(res, it[2] + dp[i+1][j-it[1]]);
-                            }
-                            dp[i][j] = res;
-                        }
-                    }
-                    dpDirty = false;
+                if (dirty) {
+                    for (int[] row : dp) Arrays.fill(row, -1);
+                    dirty = false;
                 }
-
-                System.out.println(dp[0][w]);
+                
+                System.out.println(dfs(0, w));
             }
             else if (task == 5) {
                 int d = nextInt();
-                if (sortDirty) {
-                    m = 0;
-                    for (int[] t : info) if (t[0] == 1) ws[m++] = t[1];
-                    Arrays.sort(ws, 0, m);
-                    sortDirty = false;
+                List<Integer> lst = new ArrayList<>();
+                for (int i = 0; i < n; i++) {
+                    int[] temp = info.get(i);
+                    if (temp[0] == 0) continue;
+                    lst.add(temp[1]);
                 }
+                lst.sort((o1, o2) -> Integer.compare(o1, o2));
                 // System.out.println(lst);
                 int r = 0;
                 int cnt = 0;
-                for (int l = 0; l < m - 1; l++) {
-                    while (r != m && ws[r] - ws[l] <= d) {
+                for (int l = 0; l < lst.size() - 1; l++) {
+                    while (r != lst.size() && lst.get(r) - lst.get(l) <= d) {
                         r++;
                     }
 
