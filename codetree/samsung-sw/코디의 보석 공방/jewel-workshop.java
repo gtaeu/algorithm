@@ -29,7 +29,6 @@ public class Main {
         n = nextInt();
         q--;
         dp = new int[1101][3001];
-        StringBuilder sb = new StringBuilder();
         for (int i = 0; i < n; i++) {
             int w = nextInt();
             int v = nextInt();
@@ -45,11 +44,10 @@ public class Main {
             else if (task == 3) {
                 int idx = nextInt() - 1;
                 if (idx >= info.size() || info.get(idx)[0] == 0) {
-                    sb.append(-1).append('\n');
+                    System.out.println(-1);
                     continue;
                 }
-                // System.out.println(info.get(idx)[2]);
-                sb.append(info.get(idx)[2]).append('\n');
+                System.out.println(info.get(idx)[2]);
                 info.get(idx)[0] = 0;
             }
             else if (task == 4) {
@@ -68,23 +66,20 @@ public class Main {
                     }
                 }
 
-                // System.out.println(dp[0][w]);
-                sb.append(dp[0][w]).append('\n');
+                System.out.println(dp[0][w]);
             }
             else if (task == 5) {
                 int d = nextInt();
-                List<Integer> lst = new ArrayList<>();
-                for (int i = 0; i < n; i++) {
-                    int[] temp = info.get(i);
-                    if (temp[0] == 0) continue;
-                    lst.add(temp[1]);
-                }
-                lst.sort((o1, o2) -> Integer.compare(o1, o2));
+                int[] ws = new int[n];
+                int m = 0;
+                for (int[] t : info) if (t[0] == 1) ws[m++] = t[1];
+
+                Arrays.sort(ws, 0, m);
                 // System.out.println(lst);
                 int r = 0;
                 int cnt = 0;
-                for (int l = 0; l < lst.size() - 1; l++) {
-                    while (r != lst.size() && lst.get(r) - lst.get(l) <= d) {
+                for (int l = 0; l < m - 1; l++) {
+                    while (r != m && ws[r] - ws[l] <= d) {
                         r++;
                     }
 
@@ -93,13 +88,9 @@ public class Main {
                     }
                 }
 
-                // System.out.println(cnt);
-                sb.append(cnt).append('\n');
-
+                System.out.println(cnt);
             }
         }
-
-        System.out.println(sb);
         
     }
 
