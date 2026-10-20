@@ -29,6 +29,7 @@ public class Main {
         boolean dirty = true;
         n = nextInt();
         dp = new int[1100][3001];
+        int[] ws = new int[1100];
         q--;
         for (int i = 0; i < n; i++) {
             int w = nextInt();
@@ -65,18 +66,18 @@ public class Main {
             }
             else if (task == 5) {
                 int d = nextInt();
-                List<Integer> lst = new ArrayList<>();
+                int m = 0;
                 for (int i = 0; i < n; i++) {
-                    int[] temp = info.get(i);
-                    if (temp[0] == 0) continue;
-                    lst.add(temp[1]);
+                    if (info.get(i)[0] == 1) {
+                        ws[m++] = info.get(i)[1];
+                    }
                 }
-                lst.sort((o1, o2) -> Integer.compare(o1, o2));
+                Arrays.sort(ws, 0, m);
                 // System.out.println(lst);
                 int r = 0;
                 int cnt = 0;
-                for (int l = 0; l < lst.size() - 1; l++) {
-                    while (r != lst.size() && lst.get(r) - lst.get(l) <= d) {
+                for (int l = 0; l < m; l++) {
+                    while (r != m && ws[r] - ws[l] <= d) {
                         r++;
                     }
 
