@@ -9,12 +9,7 @@ class Solution {
             if (map.containsKey(gem)) continue;
             map.put(gem, m++);
         }
-        int[] cnt = new int[m];
         int[] in = new int[m];
-        for (String gem : gems) {
-            cnt[map.get(gem)]++;
-        }
-        
         int kind = 0;
         int n = gems.length;
         int r = 0;
@@ -23,7 +18,6 @@ class Solution {
         
         for (int l = 0; l < n; l++) {
             while (r != n && kind != m) {
-                cnt[map.get(gems[r])]--;
                 if (in[map.get(gems[r])] == 0) {
                     kind++;
                 }
