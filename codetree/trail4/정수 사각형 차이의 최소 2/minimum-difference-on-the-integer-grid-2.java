@@ -24,7 +24,6 @@ public class Main {
         for (int i = 1; i <= 100; i++) {
             int temp = dfs(0, 0, i);
             if (temp == 101) continue;
-            // System.out.println(temp + " " + i);
             ans = Math.min(ans, temp - i);
         }
 
@@ -41,12 +40,12 @@ public class Main {
     // dfs(r, c, min) : r,c를 출발점으로 하여 도착점까지 갈 떄, min(하계)이상인 값에 대하여, 최대의 최소
     // (r, c, min) -> (nr, nc, min)
     static int dfs(int r, int c, int min) {
+        if (board[r][c] < min) return 101;
+
         if (r == n-1 && c == n-1) {
             if (board[r][c] >= min) return board[r][c];
             else return 101;
         }
-
-        if (board[r][c] < min) return 101;
 
         if (dp[r][c][min] != -1) return dp[r][c][min];
 
@@ -57,10 +56,7 @@ public class Main {
             int nc = c + dc[i];
             if (nr < 0 || nc < 0 || nr >= n || nc >= n) continue;
 
-            int max = board[r][c];
-            max = Math.max(max, dfs(nr, nc, min));
-
-            res = Math.min(res, max);
+            res = Math.min(res, Math.max(board[r][c], dfs(nr, nc, min)));
         }
 
         return dp[r][c][min] = res;
