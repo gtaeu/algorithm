@@ -2,6 +2,7 @@ import java.util.*;
 import java.io.*;
 
 public class Main {
+    static final int inf = Integer.MAX_VALUE;   
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
@@ -23,7 +24,7 @@ public class Main {
             }
         }
 
-        int ans = Integer.MAX_VALUE;
+        int ans = inf;
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
                 if (ans > dfs(i, j, k-1)) {
@@ -32,7 +33,7 @@ public class Main {
             }
         }
 
-        System.out.println(ans == Integer.MAX_VALUE ? -1 : ans);
+        System.out.println(ans == inf ? -1 : ans);
     }
 
     static int n, k;
@@ -44,7 +45,7 @@ public class Main {
 
     // dfs(r, c, rem) : r,c에서 출발하여 rem번 갈 수 있을때, 경로 차이들의 최댓값의 최소
     // (r, c, rem) -> (nr, nc, rem-1)
-    // 100 * 100 * 100 = 100만 * 2 -> 200만
+    // 100 * 100 * 100 = 100만 * 4 -> 400만
     static int dfs(int r, int c, int rem) {
         if (rem == 0) {
             return 0;
@@ -52,7 +53,7 @@ public class Main {
 
         if (dp[r][c][rem] != -1) return dp[r][c][rem];
 
-        int res = Integer.MAX_VALUE;
+        int res = inf;
 
         for (int i = 0; i < 4; i++) {
             int nr = r + dr[i];
