@@ -54,6 +54,11 @@ public class Main {
             if (dist[i] != 0) set.add(i);
         }
 
+        if (!set.contains(1)) {
+            System.out.println(-1);
+            System.exit(0);
+        }
+
         for (int i = 1; i <= n; i++) {
             for (int next : adj[i]) {
                 if (!set.contains(i) || !set.contains(next)) continue;
@@ -64,14 +69,13 @@ public class Main {
             }
         }
 
-        for (int i = 1; i <= n; i++) {
-            if (indegree[i] == 0) q.addLast(i);
-        }
+        q.addLast(n);
 
         while (!q.isEmpty()) {
             int now = q.pollFirst();
 
             for (int next : adj[now]) {
+                if (!set.contains(next)) continue;
                 indegree[next]--;
 
                 if (dp[next] < dp[now] + 1) {
