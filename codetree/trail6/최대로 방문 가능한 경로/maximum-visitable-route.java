@@ -20,9 +20,7 @@ public class Main {
         int[] indegree = new int[n+1];
         copy = new int[n+1];
         ArrayList<Integer>[] adj = new ArrayList[n+1];
-        ArrayList<Integer>[] graph = new ArrayList[n+1];
         for (int i = 1; i <= n; i++) adj[i] = new ArrayList<>();
-        for (int i = 1; i <= n; i++) graph[i] = new ArrayList<>();
         ArrayDeque<Integer> q = new ArrayDeque<>();
 
         for (int i = 0; i < m; i++) {
