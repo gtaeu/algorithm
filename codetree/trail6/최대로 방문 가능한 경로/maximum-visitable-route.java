@@ -35,11 +35,15 @@ public class Main {
         }
 
         int[] dist = new int[n+1];
+        boolean[] visited = new boolean[n+1];
+        visited[n] = true;
         q.addLast(n);
         while (!q.isEmpty()) {
             int now = q.pollFirst();
             for (int next : adj[now]) {
+                if (visited[next]) continue;
                 dist[next] = dist[now] + 1;
+                visited[next] = true;
                 q.add(next);
             }
         }
@@ -90,14 +94,8 @@ public class Main {
         }
 
         List<Integer> lst = new ArrayList<>();
-        // build(1, lst);
-        int now = 1;
-        lst.add(1);
-        while (now != n) {
-            lst.add(choose[now]);
-            now = choose[now];
-        }
-
+        build(1, lst);
+        
         StringBuilder sb = new StringBuilder();
         sb.append(dp[1]).append('\n');
         for (int a : lst) sb.append(a).append(' ');
