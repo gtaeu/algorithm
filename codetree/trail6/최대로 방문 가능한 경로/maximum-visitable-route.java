@@ -92,10 +92,12 @@ public class Main {
         }
 
         List<Integer> lst = new ArrayList<>();
-        build(1, lst);
-        if (lst.get(lst.size()-1) != n) { // 경로의 마지막이 n이 아님
-            System.out.println(-1);
-            System.exit(0);
+        // build(1, lst);
+        int now = 1;
+        lst.add(1);
+        while (now != n) {
+            lst.add(choose[now]);
+            now = choose[now];
         }
 
         StringBuilder sb = new StringBuilder();
