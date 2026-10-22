@@ -2,18 +2,16 @@ import java.util.*;
 import java.io.*;
 
 public class Main {
+    static final int inf = -1 * Integer.MAX_VALUE;
+
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
 
         int n = Integer.parseInt(st.nextToken());
         int m = Integer.parseInt(st.nextToken());
-        int[] dp = new int[n+1]; // dp[i] : n번에서 출발하여 i가 경로의 도착지일때, 가장 긴 경로의 길이
-        // 경로의 시작점이 n이다를 어떻게 처리하지?
-        // 지금 이런식으로하면 1로 도착하는 가장 긴 경로들 중 사전순 1등을 출력하는데
-        // 그것의 출발점이 n이라는 보장이 없음
-        // 출발지가 여러개인데, 그렇다고 출발지를 n으로만 하면 진입차수가 깨지고
-        // 먼저 n에서 출발하여 도달가능한 번호수만으로 구성해야하나
+        int[] dp = new int[n+1]; // dp[i] : i가 경로의 도착지일때, 가장 긴 경로의 길이
+        Arrays.fill(dp, inf);
         choose = new int[n+1]; // choose[i] : dp[i]의 이후 선택지
         Arrays.fill(choose, n+1);
 
@@ -27,55 +25,22 @@ public class Main {
             st = new StringTokenizer(br.readLine());
             int s = Integer.parseInt(st.nextToken());
             int e = Integer.parseInt(st.nextToken());
-            // dp[s] = 1;
-            // dp[e] = 1;
-            adj[e].add(s); // 역방향
-            // indegree[s]++;
-            // copy[s]++;
-        }
-
-        int[] dist = new int[n+1];
-        boolean[] visited = new boolean[n+1];
-        visited[n] = true;
-        q.addLast(n);
-        while (!q.isEmpty()) {
-            int now = q.pollFirst();
-            for (int next : adj[now]) {
-                if (visited[next]) continue;
-                dist[next] = dist[now] + 1;
-                visited[next] = true;
-                q.add(next);
-            }
-        }
-
-        HashSet<Integer> set = new HashSet<>();
-        set.add(n);
-        for (int i = 1; i <= n-1; i++) {
-            if (dist[i] != 0) set.add(i);
-        }
-
-        if (!set.contains(1)) {
-            System.out.println(-1);
-            System.exit(0);
+            adj[e].add(s);
+            indegree[s]++;
+            copy[s]++;
         }
 
         for (int i = 1; i <= n; i++) {
-            for (int next : adj[i]) {
-                if (!set.contains(i) || !set.contains(next)) continue;
-                indegree[next]++;
-                copy[next]++;
-                dp[i] = 1;
-                dp[next] = 1;
-            }
+            if (indegree[i] == 0) q.addLast(i);
         }
-
-        q.addLast(n);
+        dp[n] = 0;
 
         while (!q.isEmpty()) {
             int now = q.pollFirst();
 
+            if (dp[now] == inf) continue;
+
             for (int next : adj[now]) {
-                if (!set.contains(next)) continue;
                 indegree[next]--;
 
                 if (dp[next] < dp[now] + 1) {
@@ -92,16 +57,15 @@ public class Main {
             }
         }
 
-        if (dp[1] == 1) { // 1번에 도착하는 경로 자체가 없음
+        if (dp[1] == inf) {
             System.out.println(-1);
             System.exit(0);
         }
-
         List<Integer> lst = new ArrayList<>();
         build(1, lst);
-        
+
         StringBuilder sb = new StringBuilder();
-        sb.append(dp[1]).append('\n');
+        sb.append(dp[1]+1).append('\n');
         for (int a : lst) sb.append(a).append(' ');
         
         System.out.println(sb);
