@@ -38,17 +38,17 @@ public class Main {
         while (!q.isEmpty()) {
             int now = q.pollFirst();
 
-            if (dp[now] == inf) continue;
-
             for (int next : adj[now]) {
                 indegree[next]--;
 
-                if (dp[next] < dp[now] + 1) {
-                    dp[next] = dp[now] + 1;
-                    choose[next] = now;
-                }
-                else if (dp[next] == dp[now] + 1) {
-                    choose[next] = Math.min(choose[next], now);
+                if (dp[now] != inf) {
+                    if (dp[next] < dp[now] + 1) {
+                        dp[next] = dp[now] + 1;
+                        choose[next] = now;
+                    }
+                    else if (dp[next] == dp[now] + 1) {
+                        choose[next] = Math.min(choose[next], now);
+                    }
                 }
 
                 if (indegree[next] == 0) {
@@ -61,6 +61,7 @@ public class Main {
             System.out.println(-1);
             System.exit(0);
         }
+        
         List<Integer> lst = new ArrayList<>();
         build(1, lst);
 
