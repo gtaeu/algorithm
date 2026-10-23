@@ -16,7 +16,28 @@ public class Main {
         }
 
         int res = dfs(0, m, 1);
-        backtrack(0, m, 1, new StringBuilder());
+
+        int idx = 0;
+        int sum = m;
+        int bef = 1;
+        StringBuilder sb = new StringBuilder();
+        while (idx != n) {
+            for (int i = bef; i <= m; i++) {
+                int temp = dfs(idx+1, sum - i, i);
+                if (temp >= k) {
+                    idx++;
+                    sum -= i;
+                    bef = i;
+                    sb.append(i).append(' ');
+                    break;
+                }
+                else {
+                    k -= temp;
+                }
+            }
+        }
+
+        System.out.println(sb);
     }
 
     static int n, m, k;
@@ -41,26 +62,4 @@ public class Main {
 
         return dp[idx][sum][bef] = res;
     }
-
-    static void backtrack(int idx, int sum, int bef, StringBuilder sb) {
-        if (idx == n) {
-            System.out.println(sb);
-            System.exit(0);
-            return;
-        }
-
-        for (int i = bef; i <= m; i++) {
-            int temp = dfs(idx+1, sum - i, i);
-            if (temp >= k) {
-                sb.append(i).append(' ');
-                backtrack(idx+1, sum - i, i, sb);
-            }
-            else {
-                k -= temp;
-            }
-        }
-    }
-    
-
-
 }
