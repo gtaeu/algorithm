@@ -12,6 +12,8 @@ public class Main {
         int m = Integer.parseInt(st.nextToken());
         ArrayList<Integer>[] adj = new ArrayList[n+1];
         for (int i = 1; i <= n; i++) adj[i] = new ArrayList<>();
+        ArrayList<Integer>[] revAdj = new ArrayList[n+1];
+        for (int i = 1; i <= n; i++) revAdj[i] = new ArrayList<>();
         int[] indegree = new int[n+1];
         int[] dp = new int[n+1];
         int[] bef = new int[n+1]; // bef[i] : (n에서 출발하여) i를 도착할 때, i직전의 노드 번호
@@ -25,6 +27,7 @@ public class Main {
             int b = Integer.parseInt(st.nextToken());
 
             adj[b].add(a);
+            revAdj[a].add(b);
             indegree[a]++;
         }
 
@@ -67,17 +70,34 @@ public class Main {
             System.exit(0);
         }
 
-        List<Integer> lst = new ArrayList<>();
-        int now = 1;
-        while (now != n) {
-            lst.add(now);
-            now = bef[now];
-        }
-        lst.add(n);
+        // List<Integer> lst = new ArrayList<>();
+        // int now = 1;
+        // while (now != n) {
+        //     lst.add(now);
+        //     now = bef[now];
+        // }
+        // lst.add(n);
 
+        Arrays.stream(revAdj).filter(i -> i != null).forEach(i -> i.sort((o1, o2) -> Integer.compare(o1, o2)));
+        
         StringBuilder sb = new StringBuilder();
         sb.append(dp[1] + 1).append('\n');
-        for (int a : lst) sb.append(a).append(' ');
+
+        int now = 1;
+        while (now != n) {
+            sb.append(now).append(' ');
+            for (int next : revAdj[now]) {
+                if (dp[next] + 1 == dp[now]) {
+                    now = next;
+                    break;
+                }
+            }
+        }
+        sb.append(n);
+
+        // StringBuilder sb = new StringBuilder();
+        // sb.append(dp[1] + 1).append('\n');
+        // for (int a : lst) sb.append(a).append(' ');
 
         System.out.println(sb);
     }
