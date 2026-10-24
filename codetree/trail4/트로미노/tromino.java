@@ -44,7 +44,7 @@ public class Main {
         int res = 0;
         for (int[] loc : lego) {
             int r = i + loc[0];
-            int c = i + loc[1];
+            int c = j + loc[1];
             if (r < 0 || c < 0 || r >= n || c >= n) return 0;
             res += board[r][c];
         }
