@@ -8,11 +8,11 @@ public class Main {
 
         n = Integer.parseInt(st.nextToken());
         m = Integer.parseInt(st.nextToken());
-        board = new int[n][n];
+        board = new int[n][m];
 
         for (int i = 0; i < n; i++) {
             st = new StringTokenizer(br.readLine());
-            for (int j = 0; j < n; j++) {
+            for (int j = 0; j < m; j++) {
                 board[i][j] = Integer.parseInt(st.nextToken());
             }
         }
@@ -25,7 +25,7 @@ public class Main {
 
         for (int[][] lego : lst) {
             for (int i = 0; i < n; i++) {
-                for (int j = 0; j < n; j++) {
+                for (int j = 0; j < m; j++) {
                     for (int k = 0; k < 4; k++) {
                         ans = Math.max(ans, getSum(i, j, lego));
                         lego = rotate(lego);
