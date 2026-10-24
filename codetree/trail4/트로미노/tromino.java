@@ -29,6 +29,7 @@ public class Main {
                     for (int k = 0; k < 4; k++) {
                         ans = Math.max(ans, getSum(i, j, lego));
                         lego = rotate(lego);
+                        // System.out.println(Arrays.deepToString(lego));
                     }
                 }
             }
@@ -45,7 +46,7 @@ public class Main {
         for (int[] loc : lego) {
             int r = i + loc[0];
             int c = j + loc[1];
-            if (r < 0 || c < 0 || r >= n || c >= n) return 0;
+            if (r < 0 || c < 0 || r >= n || c >= m) return 0;
             res += board[r][c];
         }
         return res;
