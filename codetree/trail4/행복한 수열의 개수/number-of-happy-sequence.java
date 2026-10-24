@@ -18,9 +18,11 @@ public class Main {
         }
 
         int ans = 0;
+        int[] col = new int[n];
         for (int i = 0; i < n; i++) {
-            ans += check(i, 0) ? 1 : 0;
-            ans += check(i, 1) ? 1 : 0;
+            ans += check(board[i]);
+            for (int j = 0; j < n; j++) col[j] = board[j][i];
+            ans += check(col);
         }
 
         System.out.println(ans);
@@ -29,39 +31,18 @@ public class Main {
     static int n, m;
     static int[][] board;
 
-    static boolean check(int idx, int d) {
-        if (m == 1) return true;
-        
-        if (d == 0) { // 오른쪽방향
-            int cnt = 1;
-            int now = 0;
-
-            while (now != n-1) {
-                if (board[idx][now+1] == board[idx][now]) {
-                    cnt++;
-                    if (cnt == m) return true;
-                }
-                else {
-                    cnt = 1;
-                }
-                now++;
+    static int check(int[] a) {
+        if (m == 1) return 1;
+        int cnt = 1;
+        for (int i = 0; i < n-1; i++) {
+            if (a[i] == a[i+1]) {
+                cnt++;
+                if (cnt == m) return 1;
+            }
+            else {
+                cnt = 1;
             }
         }
-        if (d == 1) { // 아래쪽방향
-            int cnt = 1;
-            int now = 0;
-
-            while (now != n-1) {
-                if (board[now+1][idx] == board[now][idx]) {
-                    cnt++;
-                    if (cnt == m) return true;
-                }
-                else {
-                    cnt = 1;
-                }
-                now++;
-            }
-        }
-        return false;
+        return 0;
     }
 }
