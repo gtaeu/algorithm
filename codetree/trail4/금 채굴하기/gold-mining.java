@@ -34,10 +34,10 @@ public class Main {
     // backtrack(r, c, k, cnt) : r,c이고 길이k일때 금이득 - 손해
     static int backtrack(int r, int c) {
 
-        int res = 0;
-        int cnt = 0;
+        int res = board[r][c] == 1 ? 1 : 0;
+        int cnt = board[r][c] == 1 ? 1 : 0;
 
-        for (int k = 0; k <= 2*n-2; k++) {
+        for (int k = 1; k <= 2*n-2; k++) {
             int sr = r - k;
             int sc = c;            
             for (int[] d : dd) {
@@ -52,7 +52,7 @@ public class Main {
             int temp = cnt * m - (k*k + (k+1)*(k+1));
             if (temp >= 0) {
                 res = Math.max(res, cnt);
-                System.out.println(r + " " + c + " " + k + " "  + res);
+                // System.out.println(r + " " + c + " " + k + " "  + res);
             }
         }
 
