@@ -32,9 +32,9 @@ public class Main {
             }
         }
 
-        int max = -1000;
+        int max = -30000;
         for (int k = 1; k < n; k++) {
-            int a = -1000, b = -1000;
+            int a = -30000, b = -30000;
             for (int a1 = 0; a1 < k; a1++) {
                 for (int a2 = 0; a2 < m; a2++) {
                     for (int a3 = a1; a3 < k; a3++) {
@@ -59,7 +59,7 @@ public class Main {
         }
 
         for (int k = 1; k < n; k++) {
-            int a = -1000, b = -1000;
+            int a = -30000, b = -30000;
             for (int a1 = 0; a1 < n; a1++) {
                 for (int a2 = 0; a2 < k; a2++) {
                     for (int a3 = a1; a3 < n; a3++) {
