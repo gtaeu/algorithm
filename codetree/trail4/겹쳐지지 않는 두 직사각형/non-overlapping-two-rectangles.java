@@ -58,7 +58,7 @@ public class Main {
             }
         }
 
-        for (int k = 1; k < n; k++) {
+        for (int k = 1; k < m; k++) {
             int a = -30000, b = -30000;
             for (int a1 = 0; a1 < n; a1++) {
                 for (int a2 = 0; a2 < k; a2++) {
