@@ -18,6 +18,7 @@ public class Main {
         }
 
         lookup = new int[n][m]; // lookup[i][j] : 현재위치기준 가장 오른쪽으로 갈 수 있는 길이 [)
+        for (int[] row : lookup) Arrays.fill(row, -1);
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < m; j++) {
                 build(i, j);
@@ -47,8 +48,9 @@ public class Main {
 
     static int build(int i, int j) {
         if (j == m) return 0;
-
         if (board[i][j] <= 0) return 0;
+
+        if (lookup[i][j] != -1) return lookup[i][j];
 
         int res = 1;
         res += build(i, j+1);
