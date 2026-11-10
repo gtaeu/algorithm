@@ -53,31 +53,12 @@ public class Main {
     static int[][] board, copy;
 
     static void rotate(int sr, int sc, int er, int ec) {
-        ArrayDeque<Integer> q = new ArrayDeque<>();
-        q.addLast(board[sr][ec-1]);
-        for (int i = ec-1; i > sc; i--) {
-            board[sr][i] = board[sr][i-1];
-        }
-
-        q.addLast(board[er-1][ec]);
-        for (int i = er-1; i > sr; i--) {
-            board[i][ec] = board[i-1][ec];
-        }
-
-        q.addLast(board[er][sc+1]);
-        for (int i = sc+1; i < ec; i++) {
-            board[er][i] = board[er][i+1];
-        }
-
-        q.addLast(board[sr+1][sc]);
-        for (int i = sr+1; i < er; i++) {
-            board[i][sc] = board[i+1][sc];
-        }
-
-        board[sr][ec] = q.pollFirst();
-        board[er][ec] = q.pollFirst();
-        board[er][sc] = q.pollFirst();
-        board[sr][sc] = q.pollFirst();
+        int temp = board[sr][sc];
+        for (int i = sr; i < er; i++) board[i][sc] = board[i+1][sc];
+        for (int i = sc; i < ec; i++) board[er][i] = board[er][i+1];
+        for (int i = er; i > sr; i--) board[i][ec] = board[i-1][ec];
+        for (int i = ec; i > sc; i--) board[sr][i] = board[sr][i-1];
+        board[sr][sc+1] = temp;
     }
 
     static int[] dr = {-1, 1, 0, 0};
