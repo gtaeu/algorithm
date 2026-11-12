@@ -15,7 +15,7 @@ public class Main {
         }
 
         int end = n-1;
-        while (true) {
+        while (end>=0) {
             int num = arr[0];
             int cnt = 1;
             int exist = 0;
