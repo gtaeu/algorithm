@@ -97,8 +97,9 @@ public class Main {
                         board[idx++][c] = 0;
                     }
                 }
+                build();
             }
-            build();
+            
             
         }
 
@@ -139,8 +140,11 @@ public class Main {
                 cnt = 1;
                 num = board[i][c];
             }
+
+            
         }
 
+        if (cnt >= m) return true;
         return false;
     }
 
