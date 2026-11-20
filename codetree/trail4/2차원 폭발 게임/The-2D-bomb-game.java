@@ -10,7 +10,7 @@ public class Main {
         m = Integer.parseInt(st.nextToken());
         k = Integer.parseInt(st.nextToken());
         board = new int[n][n];
-        copy = new int[n][n];
+        next = new int[n][n];
 
         for (int i = 0; i < n; i++) {
             st = new StringTokenizer(br.readLine());
@@ -19,89 +19,25 @@ public class Main {
             }
         }
 
-        while (k --> 0) {
-            for (int c = 0; c < n; c++) {
-                while (toBomb(c)) {
-                    int cnt = 1;
-                    int num = board[0][c];
-                    int idx = 0;
-                    for (int i = 0; i < n; i++) {
-                        if (board[i][c] != 0) {
-                            num = board[i][c];
-                            idx = i;
-                            cnt = 1;
-                            break;
-                        }
-
-                    }
-                    for (int i = idx+1; i < n; i++) {
-                        if (board[i][c] == num) cnt++;
-                        else {
-                            if (cnt >= m) {
-                                for (int j = 0; j < cnt; j++) {
-                                    board[idx++][c] = 0;
-                                }
-                            }
-                            cnt = 1;
-                            num = board[i][c];
-                            idx = i;
-                        }
-                    }
-                    if (cnt >= m) {
-                        for (int j = 0; j < cnt; j++) {
-                            board[idx++][c] = 0;
-                        }
-                    }
-                    build();
-                }
-                
-                
-            }
-
+        while (k-- > 0) {
+            explodeAll();
             rotate();
             build();
-
         }
 
-        
+        explodeAll();
 
-        for (int c = 0; c < n; c++) {
-            while (toBomb(c)) {
-                int cnt = 1;
-                int num = board[0][c];
-                int idx = 0;
-                for (int i = 0; i < n; i++) {
-                    if (board[i][c] != 0) {
-                        num = board[i][c];
-                        idx = i;
-                        cnt = 1;
-                        break;
-                    }
+        // StringBuilder sb = new StringBuilder();
 
-                }
-                for (int i = idx+1; i < n; i++) {
-                    if (board[i][c] == num) cnt++;
-                    else {
-                        if (cnt >= m) {
-                            for (int j = 0; j < cnt; j++) {
-                                board[idx++][c] = 0;
-                            }
-                        }
-                        cnt = 1;
-                        num = board[i][c];
-                        idx = i;
-                    }
-                }
-                if (cnt >= m) {
-                    for (int j = 0; j < cnt; j++) {
-                        board[idx++][c] = 0;
-                    }
-                }
-                build();
-            }
-            
-            
-        }
+        // for (int i = 0; i < n; i++) {
+        //     for (int j = 0; j < n; j++) {
+        //         sb.append(board[i][j]);
+        //         if (j != n-1) sb.append(' ');
+        //     }
+        //     if (i != n-1) sb.append('\n');
+        // }
+
+        // System.out.println(sb);
 
         int ans = 0;
         for (int i = 0; i < n; i++) {
@@ -109,81 +45,75 @@ public class Main {
                 if (board[i][j] != 0) ans++;
             }
         }
+
         System.out.println(ans);
     }
 
     static int n, m, k;
-    static int[][] board;
-    static int[][] copy;
+    static int[][] board, next;
 
-    static boolean toBomb(int c) {
-        int cnt = 0;
-        int num = 0;
-        int idx = -1;
-        for (int i =0; i < n; i++) {
-            if (board[i][c] != 0) {
-                cnt = 1;
-                num = board[i][c];
-                idx = i;
-                break;
+    static boolean explode(int c) {
+        int i = 0;
+        boolean tof = false;
+        while (i < n) {
+            if (board[i][c] == 0) {
+                i++;
+                continue;
             }
+            int j = i;
+            while (j < n && board[j][c] == board[i][c]) {
+                j++;
+            }
+
+            if (j - i >= m) {
+                tof = true;
+                for (int r = i; r < j; r++) board[r][c] = 0;
+            }
+
+            i = j;
         }
 
-        if (num == 0) return false;
-
-        for (int i = idx+1; i < n; i++) {
-            if (board[i][c] == num) {
-                cnt++;
-                if (cnt >= m) return true;
-            }
-            else {
-                cnt = 1;
-                num = board[i][c];
-            }
-
-            
-        }
-
-        if (cnt >= m) return true;
-        return false;
+        return tof;
     }
 
     static void build() {
+        int[] temp;
+        int idx = n-1;
         for (int c = 0; c < n; c++) {
-            int[] temp = new int[n];
-            int idx = n-1;
+            idx = n-1;
+            temp = new int[n];
             for (int r = n-1; r >= 0; r--) {
-                if (board[r][c] != 0) temp[idx--] = board[r][c];
+                if (board[r][c] != 0) {
+                    temp[idx--] = board[r][c];
+                }
             }
 
-            for (int i = 0; i < n; i++) {
-                board[i][c] = temp[i];
+            for (int r = 0; r < n; r++) {
+                board[r][c] = temp[r];
             }
         }
     }
 
     static void rotate() {
-        for (int r = 0; r < n; r++) {
-            for (int c = 0; c < n; c++) {
-                copy[c][n-1-r] = board[r][c];
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                next[j][n - 1 - i] = board[i][j];
             }
         }
 
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
-                board[i][j] = copy[i][j];
+                board[i][j] = next[i][j];
             }
         }
     }
 
-    static void show() {
-        StringBuilder sb = new StringBuilder();
+    static void explodeAll() {
         for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) {
-                sb.append(board[i][j]).append(' ');
+            while (explode(i)) {
+                build();
             }
-            sb.append('\n');
         }
-        System.out.println(sb);
     }
 }
+
