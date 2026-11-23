@@ -51,29 +51,29 @@ public class Main {
 
     static boolean explodeCol(int c) {
         int i = 0;
-        int j = 0;
         boolean tof = false;
         
         while (i < n) {
             if (board[i][c] == 0) {
-                i++; 
-                j = i;
-                continue;
+                i++; continue;
             }
 
-            if (j < n && board[j][c] == board[i][c]) {
+            int j = i;
+
+            while (j < n && board[j][c] == board[i][c]) {
                 j++;
             }
-            else {
-                if (j - i >= m) {
-                    for (int k = i; k < j; k++) {
-                        board[k][c] = 0;
-                    }
-                    tof = true;
+
+            if (j - i >= m) {
+                for (int k = i; k < j; k++) {
+                    board[k][c] = 0;
                 }
-                i = j;
+                tof = true;
             }
+
+            i = j;
         }
+
         return tof;
     }
 
