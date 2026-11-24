@@ -19,13 +19,12 @@ public class Main {
             }
         }
 
-        idx = -1;
-        while(go()) idx++;
+        idx = 0;
+        while(idx < n && go()) idx++;
+        idx--;
 
-        if (idx != -1) {
-            for (int i = k; i < k+m; i++) {
-                board[idx][i] = 1;
-            }
+        for (int i = k; i < k+m; i++) {
+            board[idx][i] = 1;
         }
 
         StringBuilder sb = new StringBuilder();
@@ -45,7 +44,7 @@ public class Main {
 
     static boolean go() {
         for (int i = k; i < k+m; i++) {
-            if (board[idx+1][i] != 0) return false;
+            if (board[idx][i] != 0) return false;
         }
         return true;
     }
