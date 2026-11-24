@@ -20,8 +20,7 @@ public class Main {
         }
 
         idx = 0;
-        while(idx < n && go()) idx++;
-        idx--;
+        while(idx+1 < n && go()) idx++;
 
         for (int i = k; i < k+m; i++) {
             board[idx][i] = 1;
@@ -44,7 +43,7 @@ public class Main {
 
     static boolean go() {
         for (int i = k; i < k+m; i++) {
-            if (board[idx][i] != 0) return false;
+            if (board[idx+1][i] != 0) return false;
         }
         return true;
     }
