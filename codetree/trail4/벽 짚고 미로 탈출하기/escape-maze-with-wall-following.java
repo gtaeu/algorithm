@@ -23,6 +23,7 @@ public class Main {
         int t = 0;
         boolean tof = true;
         int d = 0;
+        int cnt = 0;
         while (!(r < 0 || c < 0 || r >= n || c >= n)) {
             int nr = r + dr[d];
             int nc = c + dc[d];
@@ -40,6 +41,7 @@ public class Main {
             if (board[nr][nc] == '.') {
                 int nnr = nr + dr[(d+1)%4];
                 int nnc = nc + dc[(d+1)%4];
+                cnt = 0;
                 if (board[nnr][nnc] == '#') {
                     t++;
                     r = nr;
@@ -57,6 +59,11 @@ public class Main {
             }
             else {
                 d = (d-1 + 4) % 4;
+                cnt++;
+                if (cnt == 4) {
+                    tof = false;
+                    break;
+                }
             }
         }
 
