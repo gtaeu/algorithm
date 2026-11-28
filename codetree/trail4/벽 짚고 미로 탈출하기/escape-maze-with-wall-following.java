@@ -24,7 +24,12 @@ public class Main {
         int t = 0;
         boolean tof = true;
         int d = 0;
-        while (!(r < 0 || c < 0 || r >= n || c >= n)) {
+        while (true) {
+            if (visited[r][c][d]) {
+                tof = false;
+                break;
+            }
+
             int nr = r + dr[d];
             int nc = c + dc[d];
 
@@ -33,36 +38,27 @@ public class Main {
                 break;
             }
 
-            if (visited[nr][nc][d]) {
-                tof = false;
-                break;
-            }
+            visited[r][c][d] = true;
 
             if (board[nr][nc] == '.') {
-                int nnr = nr + dr[(d+1)%4];
-                int nnc = nc + dc[(d+1)%4];
+                int nnr = nr + dr[(d+1) % 4];
+                int nnc = nc + dc[(d+1) % 4];
+
+            
                 if (board[nnr][nnc] == '#') {
-                    t++;
                     r = nr;
                     c = nc;
-                    visited[r][c][d] = true;
+                    t++;
                 }
-                else {
-                    visited[nr][nc][d] = true;
-                    visited[nnr][nnc][(d+1) % 4] = true;
+                else { 
+                    d = (d+1) % 4;
                     r = nnr;
                     c = nnc;
                     t += 2;
-                    d = (d+1) % 4;
                 }
             }
             else {
-                if (visited[r][c][d]) {
-                    tof = false;
-                    break;
-                }
                 d = (d-1 + 4) % 4;
-                visited[r][c][d] = true;
             }
         }
 
@@ -78,4 +74,4 @@ public class Main {
     static boolean inRange(int r, int c) {
         return !(r < 0 || c < 0 || r >= n || c >= n);
     }
-}
+}   
