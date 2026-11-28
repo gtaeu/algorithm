@@ -12,6 +12,7 @@ public class Main {
         c = Integer.parseInt(st.nextToken());
         r--; c--;
 
+        visited = new boolean[n][n][4];
         char[][] board = new char[n][n];
         for (int i = 0; i < n; i++) {
             String str = br.readLine();
@@ -23,7 +24,6 @@ public class Main {
         int t = 0;
         boolean tof = true;
         int d = 0;
-        int cnt = 0;
         while (!(r < 0 || c < 0 || r >= n || c >= n)) {
             int nr = r + dr[d];
             int nc = c + dc[d];
@@ -33,7 +33,7 @@ public class Main {
                 break;
             }
 
-            if (board[nr][nc] == '!') {
+            if (visited[nr][nc][d]) {
                 tof = false;
                 break;
             }
@@ -41,16 +41,15 @@ public class Main {
             if (board[nr][nc] == '.') {
                 int nnr = nr + dr[(d+1)%4];
                 int nnc = nc + dc[(d+1)%4];
-                cnt = 0;
                 if (board[nnr][nnc] == '#') {
                     t++;
                     r = nr;
                     c = nc;
-                    board[r][c] = '!';
+                    visited[r][c][d] = true;
                 }
                 else {
-                    board[nr][nc] = '!';
-                    board[nnr][nnc] = '!';
+                    visited[nr][nc][d] = true;
+                    visited[nnr][nnc][(d+1) % 4] = true;
                     r = nnr;
                     c = nnc;
                     t += 2;
@@ -58,12 +57,12 @@ public class Main {
                 }
             }
             else {
-                d = (d-1 + 4) % 4;
-                cnt++;
-                if (cnt == 4) {
+                if (visited[r][c][d]) {
                     tof = false;
                     break;
                 }
+                d = (d-1 + 4) % 4;
+                visited[r][c][d] = true;
             }
         }
 
@@ -74,6 +73,7 @@ public class Main {
     static int n, r, c;
     static int[] dr = {0, 1, 0, -1};
     static int[] dc = {1, 0, -1, 0};
+    static boolean[][][] visited;
 
     static boolean inRange(int r, int c) {
         return !(r < 0 || c < 0 || r >= n || c >= n);
